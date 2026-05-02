@@ -1,0 +1,69 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores user settings and application state progress",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "theme": { "type": "string", "enum": ["light", "dark"] },
+            "preferredRegion": { "type": "string" }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "RoiCalculation": {
+      "title": "ROI Calculation",
+      "description": "Results of the ROI calculator",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "monthlyBill": { "type": "number" },
+        "roofSpace": { "type": "number" },
+        "estimatedAnnualSavings": { "type": "number" },
+        "paybackPeriod": { "type": "number" },
+        "systemSize": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "monthlyBill", "roofSpace"]
+    },
+    "QuotationRequest": {
+      "title": "Quotation Request",
+      "description": "B2B quote requests for products",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "productId": { "type": "string" },
+        "companyName": { "type": "string" },
+        "contactPhone": { "type": "string" },
+        "notes": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "contacted", "closed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "productId", "companyName"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Collection of user profiles"
+    },
+    "/users/{userId}/calculations/{calcId}": {
+      "schema": "RoiCalculation",
+      "description": "User's saved ROI calculations"
+    },
+    "/quotations/{quoteId}": {
+      "schema": "QuotationRequest",
+      "description": "B2B quote requests"
+    }
+  }
+}
